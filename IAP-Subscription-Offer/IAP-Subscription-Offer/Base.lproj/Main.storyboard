@@ -15,10 +15,25 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="ema-Cu-daE">
+                                <rect key="frame" x="0.0" y="103" width="393" height="715"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="ema-Cu-daE" secondAttribute="bottom" id="FtM-vH-cde"/>
+                            <constraint firstItem="ema-Cu-daE" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="PAn-X6-iAI"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ema-Cu-daE" secondAttribute="trailing" id="gdj-G3-N9d"/>
+                            <constraint firstItem="ema-Cu-daE" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="t1T-3H-UFo"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="2uB-Gq-S0O"/>
+                    <connections>
+                        <outlet property="tableView" destination="ema-Cu-daE" id="h23-Ep-iyB"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

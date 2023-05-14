@@ -9,18 +9,12 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    private var tableView = UITableView(frame: .zero, style: .insetGrouped)
+    @IBOutlet weak var tableView: UITableView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         
-        configViews()
-    }
-
-    private func configViews() {
         setupViews()
-        setupLayout()
     }
     
     private func setupViews() {
@@ -36,34 +30,16 @@ class ViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.registerCell(identifier: SubscriptionCell.identifier)
     }
-    
-    private func setupLayout() {
-        view.addSubview(tableView)
-        
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-        ])
-    }
+
 }
 
 extension ViewController: UITableViewDataSource, UITableViewDelegate {
-    
-//    func numberOfSections(in tableView: UITableView) -> Int {
-//        return 1
-//    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCell(
-//            withIdentifier: "\(SubscriptionCell.identifier)-\(indexPath.section)",
-//            for: indexPath
-//        )
         let cell = tableView.dequeueReusableCell(withIdentifier: SubscriptionCell.identifier, for: indexPath)
         guard let cell = cell as? SubscriptionCell else { return cell }
         
