@@ -17,6 +17,8 @@
 		28AD3AA02A10D30400D31505 /* GlobalVaribles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28AD3A9F2A10D30400D31505 /* GlobalVaribles.swift */; };
 		28AD3AA22A10DC4500D31505 /* OfferPaymentMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28AD3AA12A10DC4500D31505 /* OfferPaymentMode.swift */; };
 		28AD3AA42A10DD8200D31505 /* Collection+Subscript.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28AD3AA32A10DD8200D31505 /* Collection+Subscript.swift */; };
+		28AD3AA62A10E37100D31505 /* ServerResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28AD3AA52A10E37100D31505 /* ServerResponse.swift */; };
+		28AD3AA82A10E49A00D31505 /* SignatureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28AD3AA72A10E49A00D31505 /* SignatureManager.swift */; };
 		DF5C992B2A0DDFA000562C3B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF5C992A2A0DDFA000562C3B /* AppDelegate.swift */; };
 		DF5C992D2A0DDFA000562C3B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF5C992C2A0DDFA000562C3B /* SceneDelegate.swift */; };
 		DF5C992F2A0DDFA000562C3B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF5C992E2A0DDFA000562C3B /* ViewController.swift */; };
@@ -38,6 +40,8 @@
 		28AD3A9F2A10D30400D31505 /* GlobalVaribles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalVaribles.swift; sourceTree = "<group>"; };
 		28AD3AA12A10DC4500D31505 /* OfferPaymentMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferPaymentMode.swift; sourceTree = "<group>"; };
 		28AD3AA32A10DD8200D31505 /* Collection+Subscript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Subscript.swift"; sourceTree = "<group>"; };
+		28AD3AA52A10E37100D31505 /* ServerResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerResponse.swift; sourceTree = "<group>"; };
+		28AD3AA72A10E49A00D31505 /* SignatureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignatureManager.swift; sourceTree = "<group>"; };
 		DF5C99272A0DDFA000562C3B /* IAP-Subscription-Offer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "IAP-Subscription-Offer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF5C992A2A0DDFA000562C3B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DF5C992C2A0DDFA000562C3B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -75,6 +79,7 @@
 			isa = PBXGroup;
 			children = (
 				28AD3A9D2A10D23800D31505 /* IAPManager.swift */,
+				28AD3AA72A10E49A00D31505 /* SignatureManager.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -103,6 +108,7 @@
 			children = (
 				28AD3A9F2A10D30400D31505 /* GlobalVaribles.swift */,
 				28AD3AA12A10DC4500D31505 /* OfferPaymentMode.swift */,
+				28AD3AA52A10E37100D31505 /* ServerResponse.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -219,6 +225,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				28AD3AA22A10DC4500D31505 /* OfferPaymentMode.swift in Sources */,
+				28AD3AA62A10E37100D31505 /* ServerResponse.swift in Sources */,
 				28AD3A9E2A10D23800D31505 /* IAPManager.swift in Sources */,
 				DF5C992F2A0DDFA000562C3B /* ViewController.swift in Sources */,
 				28AD3A9C2A10C85600D31505 /* UICollectionView+Extension.swift in Sources */,
@@ -227,6 +234,7 @@
 				DF5C992D2A0DDFA000562C3B /* SceneDelegate.swift in Sources */,
 				28AD3AA02A10D30400D31505 /* GlobalVaribles.swift in Sources */,
 				28AD3AA42A10DD8200D31505 /* Collection+Subscript.swift in Sources */,
+				28AD3AA82A10E49A00D31505 /* SignatureManager.swift in Sources */,
 				28AD3A972A10C6A700D31505 /* SubscriptionItemCell.swift in Sources */,
 				28AD3A9A2A10C84300D31505 /* UITableView+Extension.swift in Sources */,
 			);

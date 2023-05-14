@@ -41,12 +41,32 @@ class IAPManager: NSObject {
         }
     }
     
-    // IAP product (no offer / introduct offer)
+    // IAP product (no offer / introductory offer)
     func purchaseIntroductory(_ product: SKProduct) {
         print("IAPStep03 purchaseWithProduct")
         
-        // purchase introductory product，need to put discount (payment.paymentDiscount)
+        // purchase introductory product
         let payment = SKMutablePayment(product: product)
+        SKPaymentQueue.default().add(payment)
+    }
+    
+    // IAP product (promotional offer)
+    func purchasePromotional(_ product: SKProduct, serverResponse: SignatureResponse) {
+        print("IAPStep03.1 purchaseWithProduct")
+        
+        // purchase promotional product, need to put discount (payment.paymentDiscount)
+        let payment = SKMutablePayment(product: product)
+        let offerIdentifier = product.discounts[exist: 0]?.identifier ?? ""
+        let discount = SKPaymentDiscount(
+            identifier: offerIdentifier,
+            keyIdentifier: GlobalVaribles.shared.keyID,
+            nonce: serverResponse.nonce,
+            signature: serverResponse.signature,
+            timestamp: serverResponse.timestamp
+        )
+        payment.paymentDiscount = discount
+        payment.applicationUsername = GlobalVaribles.shared.getUsernameHash()
+        
         SKPaymentQueue.default().add(payment)
     }
     

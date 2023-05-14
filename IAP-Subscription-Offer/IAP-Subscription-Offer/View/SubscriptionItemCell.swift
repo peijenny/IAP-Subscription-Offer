@@ -43,6 +43,8 @@ class SubscriptionItemCell: UICollectionViewCell {
         
         if type == .introductory {
             purchaseIntroductory(product: product)
+        } else {
+            purchasePromotional(product: product)
         }
     }
     
@@ -94,4 +96,19 @@ class SubscriptionItemCell: UICollectionViewCell {
         IAPManager.shared.purchaseIntroductory(product)
     }
 
+    private func purchasePromotional(product: SKProduct) {
+        // Generating a Promotional Offer Signature
+        let productIdentifier = product.productIdentifier
+        let offerIdentifier = product.discounts[exist: 0]?.identifier ?? ""
+        
+        SignatureManager.shared.fetchOfferDetails(
+            productID: productIdentifier,
+            offerID: offerIdentifier
+        ) { serverResonse in
+            
+            IAPManager.shared.purchasePromotional(
+                product, serverResponse: serverResonse
+            )
+        }
+    }
 }
