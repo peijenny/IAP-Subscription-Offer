@@ -18,17 +18,19 @@ class IAPManager: NSObject {
     
     weak var delegate: IAPManagerDelegate?
     
+    // stored Subscription Product
     private var skProducts: [SKProduct] = [] {
         didSet {
             delegate?.getProductData(products: skProducts)
         }
     }
     
+    // initialization
     func initialize() {
         SKPaymentQueue.default().add(self)
     }
     
-    // fetch product infomation
+    // get product infomation
     func getProduct() {
         let ids = getProductIDs()
         let idsSet = Set(ids)
@@ -87,14 +89,20 @@ class IAPManager: NSObject {
             }
             var latestExpiresDate = Date(timeIntervalSince1970: 0)
             let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss VV"
+            
+            // check all receipts
             for receipt in receipts_array {
                 let used_trial: Bool = receipt["is_trial_period"] as? Bool ?? false || (receipt["is_trial_period"] as? NSString)?.boolValue ?? false
                 let used_intro: Bool = receipt["is_in_intro_offer_period"] as? Bool ?? false || (receipt["is_in_intro_offer_period"] as? NSString)?.boolValue ?? false
+                
+                // check introductory offer already used
                 if used_trial || used_intro {
                     self.delegate?.canUseIntroductory(isEligible: false)
                     return
                 }
-                formatter.dateFormat = "yyyy-MM-dd HH:mm:ss VV"
+                
+                // check current subscription status (use expires_date)
                 if let expiresDateString = receipt["expires_date"] as? String,
                    let date = formatter.date(from: expiresDateString) {
                     if date > latestExpiresDate {
@@ -102,6 +110,8 @@ class IAPManager: NSObject {
                     }
                 }
             }
+            
+            // If the subscription has expired, than you can use introductory offer
             if latestExpiresDate > Date() {
                 self.delegate?.canUseIntroductory(isEligible: false)
             } else {
@@ -109,26 +119,12 @@ class IAPManager: NSObject {
             }
         }.resume()
     }
-    
-    // 處理所有未完成的交易
-    func handleAllPendingTransaction() {
-        print("IAPManager handleAllPendingTransaction 呼叫處理未完成的交易")
-        let transactions = SKPaymentQueue.default().transactions
-        _ = transactions.map { transaction in
-            switch transaction.transactionState {
-            case .purchasing, .deferred: break
-            case .purchased, .restored: deliverTransaction(transaction)
-            case .failed: handleFailTransaction(transaction)
-            default: break
-            }
-        }
-    }
 }
 
 // MARK: - get products from AppStore
 extension IAPManager: SKProductsRequestDelegate {
     
-    // 請求產品
+    // request product
     func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
         print("IAPManager productsRequest")
         if response.products.count == 0 {
@@ -156,6 +152,7 @@ extension IAPManager: SKPaymentTransactionObserver {
      第二次： transactionState == .purchased  (rawValue = 1) 交易完成，進行下一步
      */
     
+    // Trigger timing: open App & when purchase
     func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
         print("IAPStep04")
         _ = transactions.map { transaction in
@@ -171,7 +168,7 @@ extension IAPManager: SKPaymentTransactionObserver {
         }
     }
     
-    // 印出交易資訊
+    // print purchase information
     func printTransactionInfo(_ transaction: SKPaymentTransaction) {
         print("IAPStep04 printTransactionInfo =============")
         print("transactionState: \(transaction.transactionState.rawValue)")
@@ -185,7 +182,7 @@ extension IAPManager: SKPaymentTransactionObserver {
         }
     }
     
-    // 處理失敗狀況
+    // handle failure
     private func handleFailTransaction(_ transaction: SKPaymentTransaction) {
         print("IAPManager handleFailTransaction")
         
@@ -194,40 +191,12 @@ extension IAPManager: SKPaymentTransactionObserver {
         finishPurchasedTransaction(transaction)
     }
     
-    // 交易成功，完成購買交易
+    // handle success, complete purchase
     private func finishPurchasedTransaction(_ transaction: SKPaymentTransaction) {
         SKPaymentQueue.default().finishTransaction(transaction)
     }
     
-    // 提交交易
-    private func deliverTransaction(_ transcation: SKPaymentTransaction) {
-        print("IAPSet05 === deliverContent ===")
-        
-        var object: [String: Any] = [
-            "transaction_id": transcation.transactionIdentifier ?? "",
-            "response": "200"
-        ]
-        
-        object = [
-            "transactionId": transcation.transactionIdentifier ?? "",
-            "paymentType": "1",  // 1 = Apple, 2 = Google
-            "customUid": "", // 使用者 ID
-            "appId": Bundle.main.bundleIdentifier ?? "", // APP ID (內部ID)
-            "subsscriptionId": transcation.payment.productIdentifier // Store上訂閱品項的ID
-        ]
-        
-        print(object)
-        
-        var receiptData = ""
-        
-        if let receipt = Bundle.main.appStoreReceiptURL,
-           let receiptString = try? Data(contentsOf: receipt).base64EncodedString() {
-            receiptData = receiptString
-            print("ReceiptData: \(receiptData)")
-        }
-    }
-    
-    // 交易錯誤，顯示錯誤資訊
+    // purchase error, error message displayed
     private func transactionError(for error: NSError?) -> SKError {
         let message = "Unknown error"
         let altError = NSError(
