@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import StoreKit
 
 class SubscriptionItemCell: UICollectionViewCell {
 
@@ -14,6 +15,9 @@ class SubscriptionItemCell: UICollectionViewCell {
     @IBOutlet weak var originPriceLabel: UILabel!
     @IBOutlet weak var discountPriceLabel: UILabel!
     @IBOutlet weak var confirmButton: UIButton!
+    
+    private var product: SKProduct?
+    private var type: OfferType = .introductory
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -35,6 +39,59 @@ class SubscriptionItemCell: UICollectionViewCell {
     }
     
     @objc func clickedButton(_ sender: UIButton) {
+        guard let product = product else { return }
         
+        if type == .introductory {
+            purchaseIntroductory(product: product)
+        }
     }
+    
+    // setup cell - no offer (origin Price)
+    func setupOriginPrice(product: SKProduct) {
+        self.product = product
+        
+        let originPriceString = "Origin Price: $\(product.price)"
+        originPriceLabel.text = originPriceString
+        
+        offerModeLabel.text = "No Introductory Offer"
+        discountPriceLabel.text = " "
+    }
+    
+    // setup cell - introductory offer (offer price)
+    func setupOfferPrice(discount: SKProductDiscount, originPrice: Int, type: OfferType) {
+        self.type = type
+        
+        let index = Int(discount.paymentMode.rawValue)
+        let originPriceString = "Origin Price: $\(originPrice)"
+        
+        offerModeLabel.text = "\(type.rawValue) - \(OfferPaymentMode.allCases[index].title)"
+        
+        let attributedString = NSMutableAttributedString(string: originPriceString)
+        srikethroughStyle(attributedString: attributedString)
+        
+        let discountPrice = Int(truncating: discount.price)
+        discountPriceLabel.text = "Special Offer: $\(discountPrice)"
+        discountPriceLabel.textColor = .red
+    }
+    
+    private func srikethroughStyle(attributedString: NSMutableAttributedString) {
+        attributedString.addAttribute(
+            .strikethroughStyle,
+            value: NSNumber(value: NSUnderlineStyle.thick.rawValue),
+            range: NSMakeRange(0, attributedString.length)
+        )
+        attributedString.addAttribute(
+            .strikethroughColor,
+            value: UIColor.red,
+            range: NSMakeRange(0, attributedString.length)
+        )
+        
+        originPriceLabel.textColor = .lightGray
+        originPriceLabel.attributedText = attributedString
+    }
+    
+    private func purchaseIntroductory(product: SKProduct) {
+        IAPManager.shared.purchaseIntroductory(product)
+    }
+
 }
